@@ -1,30 +1,36 @@
+/*
+ * Demo program to add your Nuttyfi, NodeMCU ESP8266 or ESP32 wifi board to 
+ * Blynk2.0 IoT mobile app & web dashboard
+ *  for any query visit to www.smedehradun.com
+ *  To design your customized hardware, visit to www.nuttyengineer.com 
+ *  Youtube Channel: https://www.youtube.com/c/SMEDehradun
+ */
+
 #include <ESP8266WiFi.h>
 
-String apiKey = "Write API Key"; // write your "Write API key"
-const char* ssid = "wifi name"; // write your "wifi name"
-const char* password = "wifi passwork"; // write your "wifi password"
+String apiKey = "RVH3SBGZ557604SH"; // write your "Write API key"
+const char* ssid = "1 Step R&D"; // write your "wifi name"
+const char* password = "abcd@54321@"; // write your "wifi password"
 const char* server = "api.thingspeak.com";
 WiFiClient client;
 
 //for NodeMCU
-const int trigPin = D6; 
+const int trigPin = D6;
 const int echoPin = D7;
-
 // defines variables
 long duration;
 int distance, cntr=0;
+
 void setup() 
 {
   Serial.begin(9600);
   Serial.println("Serial Begin");
-        
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); 
   WiFi.begin(ssid, password);
-  Serial.println();
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
-        
-  WiFi.begin(ssid, password);
         
   while (WiFi.status() != WL_CONNECTED)
   {
@@ -37,7 +43,7 @@ void setup()
 
 void loop() 
 {
-  void ultra();
+  ultra();
   cntr++;
   delay(1000);
   if(cntr>=10) //thingspeak needs minimum 15 sec delay between updates
@@ -49,25 +55,25 @@ void loop()
     client.stop();
     Serial.println("Waiting");
     delay(1000);
+    cntr=0;
   }
 }
 
 void ultra()
 {
+  // Clears the trigPin
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   // Sets the trigPin on HIGH state for 10 micro seconds
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  // Reads the echoPin, returns the sound wave travel time in microseconds
-  duration = pulseIn(echoPin, HIGH);
-  // Calculating the distance
+  
+  duration = pulseIn(echoPin, HIGH) ;
   distance= duration*0.034/2;
-  // Prints the distance on the Serial Monitor
-  Serial.print("Distance: ");
-  Serial.println(distance);
+  Serial.println("Distance =" + String(distance) + " cm");
 }
+
 void fwd_to_Thingspeak()
 {
   String postStr = apiKey;
@@ -85,7 +91,7 @@ void fwd_to_Thingspeak()
   client.print("\n\n");
   client.print(postStr);
           
-  Serial.print("Send data to channel-1 ");
+  Serial.println("Send data to thingspeak: ");
   Serial.print("Content-Length: ");
   Serial.print(postStr.length());
   Serial.print("Field-1: ");
