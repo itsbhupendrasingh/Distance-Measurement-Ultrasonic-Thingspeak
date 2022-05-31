@@ -1,8 +1,8 @@
 /*
  * Demo program to add your Nuttyfi, NodeMCU ESP8266 or ESP32 wifi board to 
  * Blynk2.0 IoT mobile app & web dashboard
- *  for any query visit to www.smedehradun.com
- *  To design your customized hardware, visit to www.nuttyengineer.com 
+ *  for any query or any soluiton, visit to www.smedehradun.com
+ *  To design your customized hardware or boards, visit to www.nuttyengineer.com 
  *  Youtube Channel: https://www.youtube.com/c/SMEDehradun
  */
 
@@ -19,7 +19,7 @@ const int trigPin = D6;
 const int echoPin = D7;
 // defines variables
 long duration;
-int distance, cntr=0;
+int distance;
 
 void setup() 
 {
@@ -44,10 +44,9 @@ void setup()
 void loop() 
 {
   ultra();
-  cntr++;
   delay(1000);
-  if(cntr>=10) //thingspeak needs minimum 15 sec delay between updates
-  {
+  // we have made changes in program to decrease the latency.
+  // but it will take minimum 15 second to post data on Thingspeak channel.
     if (client.connect(server,80))
     {
       fwd_to_Thingspeak();
@@ -55,8 +54,6 @@ void loop()
     client.stop();
     Serial.println("Waiting");
     delay(1000);
-    cntr=0;
-  }
 }
 
 void ultra()
@@ -94,7 +91,7 @@ void fwd_to_Thingspeak()
   Serial.println("Send data to thingspeak: ");
   Serial.print("Content-Length: ");
   Serial.print(postStr.length());
-  Serial.print("Field-1: ");
+  Serial.print(" Field-1: ");
   Serial.print(distance);  // ultrasonic data
   Serial.println(" data send");            
 }
