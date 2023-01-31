@@ -8,9 +8,9 @@
 
 #include <ESP8266WiFi.h>
 
-String apiKey = "RVH3SBGZ557604SH"; // write your "Write API key"
-const char* ssid = "1 Step R&D"; // write your "wifi name"
-const char* password = "abcd@54321@"; // write your "wifi password"
+String apiKey = "##########"; // write your "Write API key"
+const char* ssid = "##########"; // write your "wifi name"
+const char* password = "##########"; // write your "wifi password"
 const char* server = "api.thingspeak.com";
 WiFiClient client;
 
